@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() => runApp(MyApp());
@@ -38,8 +39,19 @@ class _MapDemoState extends State<MapDemo> {
   var cameraPosition= CameraPosition(target: LatLng(31.2608767, 32.2994122)
   ,zoom: 16);
 
+  var markers=Set<Marker>();
+
   @override
   Widget build(BuildContext context) {
+
+    markers.add(
+      Marker(markerId:MarkerId("homemarker"),
+      position: LatLng(31.2608767, 32.2994122),
+       onTap: (){
+        Fluttertoast.showToast(msg: "Marker has been tabbed");
+       }
+      )
+    );
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -55,11 +67,47 @@ class _MapDemoState extends State<MapDemo> {
         Expanded(
           child: GoogleMap(initialCameraPosition: cameraPosition
           , mapType: MapType.terrain,
-          onMapCreated: (controller) {
+          onMapCreated: (controller) async {
             _controller.complete(controller);
+
+
+
           },
+           onTap:(latln) {
+             markers.add(
+                 Marker(markerId:MarkerId("newmarker"+latln.toString()),
+                     position: latln,
+                     infoWindow: InfoWindow(title:"newmarker"+latln.latitude.toString(),
+                     snippet: " kalam mn gheer mayo2af 3aleha",
+                     
+                     ),
+                     onTap: (){
+                       Fluttertoast.showToast(msg: "Marker has been tabbed");
+                     },
+                 )
+             );
+
+             setState(() {
+             });
+
+           },
+            markers: markers,
+
           ),
-        )
+        ),
+        
+        ElevatedButton(onPressed: (){
+          markers.add(
+              Marker(markerId:MarkerId("newmarker"),
+                  position: LatLng(31.2618761, 32.2994125),
+                  onTap: (){
+                    Fluttertoast.showToast(msg: "Marker has been tabbed");
+                  }
+              ));
+
+          setState(() {
+          });
+        }, child: Text("Add Marker"))
 
       ],
     );
