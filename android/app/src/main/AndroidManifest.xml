@@ -9,6 +9,9 @@
         android:label="psd_day7_location"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyBYrZuXSGBZC7z_fQUzp3LDcI3ZLLEE9wI"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
